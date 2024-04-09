@@ -1,18 +1,22 @@
 import express from 'express';
-import Veiculo from './models/veiculo.mjs';
-
+import VeiculoController from './controllers/veiculo_controller.mjs';
 
 const app = express();
 const port = 3000;
 
-app.get('/veiculos', async (req, res) => {
-  res.json(await Veiculo.findAll());
-})
+app.use(express.json());
+app.use(express.urlencoded());
 
-app.post('/veiculos', async (req, res) => {
-    const created = await Veiculo.create({ fabricante: "GM", modelo: "Corsa"});
-    res.send(created);
-});
+
+app.get('/veiculos', VeiculoController.all);
+
+app.get('/veiculos/:id', VeiculoController.one); 
+
+app.post('/veiculos', VeiculoController.new);
+
+app.put('/veiculos', VeiculoController.edit);
+
+app.delete('/veiculos', VeiculoController.remove);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
